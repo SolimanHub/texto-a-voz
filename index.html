@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>texto a voz</title>
+</head>
+<body>
+  <label for="voiceList">seleccionar voz:</label>
+  <select id="voiceList"></select>
+  <br>
+  <br>
+  <input type="text" id="txtInput">
+  <br>
+  <button id="btnSpeak">Hablar</button>
+
+  <script>
+    var txtInput = document.querySelector("#txtInput");
+    var voiceList = document.querySelector("#voiceList");
+    var btnSpeak = document.querySelector("#btnSpeak");
+    var synth = window.speechSynthesis;
+    var voices = [];
+
+    NewVoices();
+    if(speechSynthesis !== undefined){
+	  speechSynthesis.onvoiceschanged = NewVoices;
+	}
+
+    
+    btnSpeak.addEventListener('click',() => {
+	  var toSpeak = new SpeechSynthesisUtterance(txtInput.value);
+	  var selectedVoiceName = voiceList.selectedOptions[0].getAttribute('data-name');
+	  voices.forEach((voice) => {
+		if(voice.name === selectedVoiceName){
+		      toSpeak.voice = voice;
+		    }
+
+	      })
+	  synth.speak(toSpeak);
+	});
+
+    function NewVoices(){
+	  voices = synth.getVoices();
+	  var selectedIndex = voiceList.selectedIndex < 0 ? 0 : voiceList.selectedIndex;
+	  voiceList.innerHTML = '';
+	  voices.forEach((voice) => {
+		var ListItem = document.createElement('option');
+		ListItem.textContent = voice.name;
+		ListItem.setAttribute('data-lang', voice.lang);
+		ListItem.setAttribute('data-name', voice.name);
+		voiceList.appendChild(ListItem);
+	      })
+	  voiceList.selectedIndex = selectedIndex;
+	}
+
+  </script>
+</body>
+</html>
