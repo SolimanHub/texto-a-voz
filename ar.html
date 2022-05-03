@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>texto a voz</title>
+</head>
+<body>
+  <input type="text" id="text">
+  <input type="button" id="btn" value="hablar">
+
+  <script>
+    document.querySelector("#btn").addEventListener('click',()=>{
+      decir(document.querySelector("#text").value);
+    });
+
+function decir(texto){
+  speechSynthesis.speak(new SpeechSynthesisUtterance(texto));
+}
+  </script>
+
+</body>
+</html>
